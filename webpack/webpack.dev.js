@@ -201,6 +201,14 @@ module.exports = {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
                 use: "url-loader",
             },
+            {
+                test: /\.bpmnlintrc$/,
+                use: [
+                    {
+                        loader: 'bpmnlint-loader',
+                    }
+                ]
+            }
         ],
     },
     plugins: [
@@ -345,7 +353,7 @@ module.exports = {
                 changeOrigin: true,
                 // 实际请求中不存在代理字段则重写接口路径把api字符串去掉
                 pathRewrite: {
-                	"^/api": "",
+                    "^/api": "",
                 }
             },
         ],
