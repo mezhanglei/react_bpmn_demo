@@ -81,7 +81,7 @@ const ProcessDesign = (props) => {
     }, []);
 
     // 更新任务或事件的属性
-    const updateBpmn = (value) => {
+    const updateBpmn = (value: any) => {
         const modeling = modelerRef.current.get('modeling');
         if (activeNodeEle) {
             modeling.updateProperties(activeNodeEle, value);
@@ -96,25 +96,24 @@ const ProcessDesign = (props) => {
 
     const getBpmnXML = () => {
         const bpmnModeler = modelerRef.current;
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             if (bpmnModeler._customElements != null && bpmnModeler._customElements.length > 0) {
                 // 将自定义的元素 加入到 _definitions
                 bpmnModeler._definitions.rootElements[0].flowElements = bpmnModeler._definitions.rootElements[0].flowElements.concat(
                     bpmnModeler._customElements[0],
                 );
             }
-            bpmnModeler.saveXML({ format: true }, (err, xml) => {
-                if (err) {
-                    reject(err);
-                }
-                resolve(xml);
-            });
+            const { err, xml } = await bpmnModeler.saveXML({ format: true });
+            if (err) {
+                reject(err);
+            }
+            resolve(xml);
         });
     };
 
     const saveBpmnXML = async () => {
         const xml = await getBpmnXML();
-        console.log(xml, '保存xml')
+        console.log(xml, '保存xml');
     };
 
     useImperativeHandle(childRef, () => {

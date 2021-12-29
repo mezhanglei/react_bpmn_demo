@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import React, { useState, useRef } from 'react';
 import { Tabs } from 'antd';
 import { defaultDiagramXML } from './resource/defaultDiagram';
 import ProcessDesign from './ProcessDesign';
@@ -23,16 +22,14 @@ const BpmnProcess = () => {
     };
 
     return (
-        <PageContainer>
-            <Tabs onChange={(avtiveKey) => tabsChange(avtiveKey)} defaultActiveKey="1">
-                <TabPane key="1" tab="流程设计">
-                    <ProcessDesign childRef={childRef} XML={bpmnXML} />
-                </TabPane>
-                <TabPane key="2" tab="XML">
-                    <XMLView XML={bpmnXML} />
-                </TabPane>
-            </Tabs>
-        </PageContainer>
+        <Tabs onChange={(avtiveKey) => tabsChange(avtiveKey)} defaultActiveKey="1">
+            <TabPane key="1" tab="流程设计">
+                <ProcessDesign childRef={childRef} XML={bpmnXML} />
+            </TabPane>
+            <TabPane key="2" tab="XML">
+                <XMLView XML={bpmnXML} />
+            </TabPane>
+        </Tabs>
     );
 };
 export default BpmnProcess;

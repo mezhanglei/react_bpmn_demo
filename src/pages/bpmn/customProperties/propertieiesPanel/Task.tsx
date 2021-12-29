@@ -106,7 +106,7 @@ const Tasks = (props) => {
         } else {
             eleValues.push(customProperties);
         }
-        updateProperties({ extensionElements })
+        updateProperties({ extensionElements });
     };
 
     const valueChange = (value) => {
