@@ -3,9 +3,24 @@
  * @Author: lishuai
  * @Date: 2021-03-02 19:30:30
  * @LastEditTime: 2021-03-12 17:41:07
+ * definitions的schema约束说明：
+ * 1. 声明xsi命名空间： xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ * 2. 定义xsi命名空间和对应的xsd文件(Xml Schema Definition)之间的关系： xsi:schemaLocation="http://schema.omg.org/spec/BPMN/2.0 BPMN20.xsd"
+ * 3. xmlns: xxx = "命名空间"：表示该元素和子元素可以使用相应的xxx前缀名引用定义在命名空间内的元素，可以引入多个命名空间
+ * 4. xmlns： 为所有非前缀元素定义当前文档中的默认命名空间
+ * 5. targetNamespace：TargetNameSpace只在定义XML SCHAME的时候才有用，它的主要作用是标明Schame定义的元素的命名空间
  */
 export const defaultDiagramXML = `<?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:flowable="http://flowable.org/bpmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="undefined" targetNamespace="http://www.flowable.org/processdef">
+<definitions
+xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://schema.omg.org/spec/BPMN/2.0 BPMN20.xsd"
+xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+xmlns:flowable="http://flowable.org/bpmn"
+xmlns:ns0="undefined"
+targetNamespace="http://www.flowable.org/processdef">
   <process id="bpm-process-default" name="默认审批流程" isExecutable="true">
     <documentation>审批流程</documentation>
     <startEvent id="Event_06s5ncu" name="开始节点">
