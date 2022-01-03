@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Input, Form } from 'antd';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+import { CustomPropertiesProps } from '..';
 
 const layout = {
     labelCol: { span: 7 },
@@ -8,7 +9,7 @@ const layout = {
 };
 const FormItem = Form.Item;
 
-const Events = (props) => {
+const Events = (props: CustomPropertiesProps) => {
     const [form] = Form.useForm();
     const { activeNodeEle, updateProperties } = props;
     const nodeValues = getBusinessObject(activeNodeEle);
@@ -19,7 +20,7 @@ const Events = (props) => {
         });
     }, [form, nodeValues?.id, nodeValues?.name]);
 
-    const valueChange = (value) => {
+    const valueChange = (value: string) => {
         updateProperties(value);
     };
 

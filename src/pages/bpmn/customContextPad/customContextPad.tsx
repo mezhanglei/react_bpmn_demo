@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 /* eslint-disable no-underscore-dangle */
 import { assign } from 'min-dash';
-import inherits from 'inherits';
+import inherits from '@/utils/inherits';
 import ContextPadProvider from 'bpmn-js/lib/features/context-pad/ContextPadProvider';
 import { is } from 'bpmn-js/lib/util/ModelUtil';
 
@@ -31,17 +31,18 @@ function CustomContextPadProvider(injector, connect, translate) {
                 newOptions = title;
                 newTitle = translate('Append {type}', { type: type.replace(/^bpmn:/, '') });
             }
+            
             function appendStart(event, ele) {
                 const shape = elementFactory.createShape(assign({ type }, newOptions));
                 create.start(event, shape, { source: ele });
             }
 
-            function appendStart1(_, ele) {
+            function appendUserTask(_, ele) {
                 const shape = elementFactory.createShape(assign({ type }, newOptions));
                 autoPlace.append(ele, shape);
             }
 
-            const append = autoPlace ? appendStart1 : appendStart;
+            const append = autoPlace ? appendUserTask : appendStart;
             const shortType = type.replace(/^bpmn:/, '');
             return {
                 group: 'model',

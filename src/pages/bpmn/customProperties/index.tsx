@@ -6,7 +6,12 @@ import RenderPanel from './propertieiesPanel';
 
 const { TabPane } = Tabs;
 
-const CustomProperties = (props) => {
+export interface CustomPropertiesProps {
+    modeler: unknown
+    activeNodeEle: unknown
+    updateProperties: (value: any) => void
+}
+const CustomProperties = (props: CustomPropertiesProps) => {
     const { activeNodeEle = {} } = props;
     const { type } = activeNodeEle || {};
     return (

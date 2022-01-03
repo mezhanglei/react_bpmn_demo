@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Input, Form, Select } from 'antd';
 import elementHelper from 'bpmn-js-properties-panel/lib/helper/ElementHelper';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+import { CustomPropertiesProps } from '..';
 
 const typeOptions = [
     { label: '角色', value: 'role' },
@@ -16,7 +17,7 @@ const layout = {
 };
 const FormItem = Form.Item;
 
-const Tasks = (props) => {
+const Tasks = (props: CustomPropertiesProps) => {
     const [form] = Form.useForm();
     const [userType, setUserType] = useState('');
     const userOptions = [];

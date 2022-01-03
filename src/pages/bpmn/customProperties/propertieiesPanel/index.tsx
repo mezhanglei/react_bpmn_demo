@@ -1,10 +1,11 @@
-/* eslint-disable camelcase */
+import React from 'react';
+import { CustomPropertiesProps } from '..';
 import Events from './Event';
 import Process from './Process';
 import SequenceFlow from './SequenceFlow';
 import Task from './Task';
 
-const RenderPanel = (props) => {
+const RenderPanel = (props: CustomPropertiesProps) => {
     const { activeNodeEle = {} } = props;
     const { type } = activeNodeEle || {};
     const panels = {

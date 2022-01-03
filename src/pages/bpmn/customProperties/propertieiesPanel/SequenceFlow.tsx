@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Input, Form } from 'antd';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+import { CustomPropertiesProps } from '..';
 
 const layout = {
     labelCol: { span: 6 },
@@ -9,7 +10,7 @@ const layout = {
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
-const SequenceFlow = (props) => {
+const SequenceFlow = (props: CustomPropertiesProps) => {
     const [form] = Form.useForm();
     const { activeNodeEle, updateProperties, modeler } = props;
     const nodeValues = getBusinessObject(activeNodeEle);
