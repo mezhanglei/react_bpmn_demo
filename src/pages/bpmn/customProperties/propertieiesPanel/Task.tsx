@@ -36,7 +36,8 @@ const Tasks = (props: CustomPropertiesProps) => {
         return '';
     };
 
-    const getExtensionProperty = (type) => {
+    // 获取指定拓展属性值
+    const getExtensionProperty = (type: string) => {
         if (!extensionEle) {
             return [];
         }
@@ -63,18 +64,12 @@ const Tasks = (props: CustomPropertiesProps) => {
         });
     }, [extensionEle, form, nodeValues?.id, nodeValues?.name]);
 
-    const getProperty = (ele, propName) => {
-        const businessObject = getBusinessObject(ele);
-        try {
-            return businessObject.get(propName);
-        } catch (e) {
-            return e;
-        }
-    };
+    // 更新自定义属性
+    const updateCustomeProperites = (property: string, value: any) => {
 
-    const updateCustomeProperites = (property: string, value: string) => {
+        // extensionElements拓展节点
         const bpmnFactory = modeler.get('bpmnFactory');
-        let extensionElements = getProperty(activeNodeEle, 'extensionElements');
+        let extensionElements = nodeValues.get('extensionElements');
         if (!extensionElements) {
             extensionElements = elementHelper.createElement(
                 'bpmn:ExtensionElements',
@@ -84,6 +79,7 @@ const Tasks = (props: CustomPropertiesProps) => {
             );
         }
 
+        // flowable:CustomProperties节点信息
         const eleValues = extensionElements.get('values');
         let customProperties;
         let customPropertiesIndex = -1;
@@ -101,17 +97,22 @@ const Tasks = (props: CustomPropertiesProps) => {
                 bpmnFactory,
             );
         }
+
+        // flowable:CustomProperties节点赋值
         customProperties[property] = Array.isArray(value) ? value.join(',') : value;
+        // extensionElementsj节点赋值
         if (customPropertiesIndex > -1) {
             eleValues[customPropertiesIndex] = customProperties;
         } else {
             eleValues.push(customProperties);
         }
+        // 更新xml拓展信息
         updateProperties({ extensionElements });
     };
 
-    const valueChange = (value) => {
+    const valueChange = (value: any) => {
         const keys = Object.keys(value);
+        // 更新拓展属性
         if (keys.some((item) => list.includes(item))) {
             if (userType === 'role') {
                 updateCustomeProperites('candidateRoleList', value.candidateRoleList);
@@ -119,6 +120,7 @@ const Tasks = (props: CustomPropertiesProps) => {
                 updateCustomeProperites('candidateUserList', value.candidateUserList);
             }
         } else {
+            // 更新其他属性
             updateProperties(value);
         }
     };

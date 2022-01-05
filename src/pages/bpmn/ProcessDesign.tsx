@@ -57,7 +57,6 @@ export default class ProcessDesign extends React.Component<ProcessDesignProps, {
     events.forEach((eventType) => {
       bpmnjs.on(eventType, (e) => {
         const { element } = e;
-        console.log(e)
         const { type } = element;
         if (type !== 'label') {
           this.setState({
@@ -90,21 +89,12 @@ export default class ProcessDesign extends React.Component<ProcessDesignProps, {
     }
   };
 
-  // 更新任务节点或事件节点的属性
+  // 更新xml
   updateProperties = (value: any) => {
     const modeling = this.modeler.get('modeling');
     const { activeNodeEle } = this.state;
     if (activeNodeEle) {
       modeling.updateProperties(activeNodeEle, value);
-    }
-  };
-
-  // 更新节点名称
-  updateLabel = (name: string) => {
-    const modeling = this.modeler.get('modeling');
-    const { activeNodeEle } = this.state;
-    if (activeNodeEle) {
-      modeling.updateLabel(activeNodeEle, name)
     }
   };
 

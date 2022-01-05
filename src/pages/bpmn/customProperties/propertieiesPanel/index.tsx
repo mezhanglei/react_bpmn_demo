@@ -16,7 +16,7 @@ const RenderPanel = (props: CustomPropertiesProps) => {
         'bpmn:ExclusiveGateway': <Events {...props} />, // 网关属性面板
         'bpmn:UserTask': <Task {...props} />, // 任务节点属性面板
     };
-    const panelComponent = panels[type] || <Process {...props} />;
+    const panelComponent = panels[type];
     return <div>{panelComponent}</div>;
 };
 export default RenderPanel;

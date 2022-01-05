@@ -31,6 +31,12 @@ export interface BpmnModelerOptions {
     additionalModules: AdditionalModules
     linting: Linting
     moddleExtensions: ModdleExtensions
+    // container: DomElement // 渲染容器
+	// width：string | number// 查看器宽度
+	// height: string | number // 查看器高度
+	// moddleExtensions： object// 需要用的扩展包
+	// modules：<didi.Module>[]; // 自定义且需要覆盖默认扩展包的模块列表
+	// additionalModules: <didi.Module>[]; // 自定义且与默认扩展包一起使用的模块列表
 }
 
 function CustomModeler(options: BpmnModelerOptions) {
