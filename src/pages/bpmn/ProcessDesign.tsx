@@ -108,7 +108,7 @@ export default class ProcessDesign extends React.Component<ProcessDesignProps, {
     }
   };
 
-  getBpmnXML = () => {
+  getBpmnXML = (): Promise<string> => {
     const bpmnModeler = this.modeler;
     return new Promise(async (resolve, reject) => {
       if (bpmnModeler._customElements != null && bpmnModeler._customElements.length > 0) {

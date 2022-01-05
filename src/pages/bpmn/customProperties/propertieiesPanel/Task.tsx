@@ -72,7 +72,7 @@ const Tasks = (props: CustomPropertiesProps) => {
         }
     };
 
-    const updateCustomeProperites = (property, value) => {
+    const updateCustomeProperites = (property: string, value: string) => {
         const bpmnFactory = modeler.get('bpmnFactory');
         let extensionElements = getProperty(activeNodeEle, 'extensionElements');
         if (!extensionElements) {
@@ -83,11 +83,11 @@ const Tasks = (props: CustomPropertiesProps) => {
                 bpmnFactory,
             );
         }
+
         const eleValues = extensionElements.get('values');
-        const { length } = eleValues;
         let customProperties;
         let customPropertiesIndex = -1;
-        for (let i = 0; i < length; i += 1) {
+        for (let i = 0; i < eleValues?.length; i += 1) {
             if (eleValues[i] && eleValues[i].$type === 'flowable:CustomProperties') {
                 customProperties = eleValues[i];
                 customPropertiesIndex = i;
