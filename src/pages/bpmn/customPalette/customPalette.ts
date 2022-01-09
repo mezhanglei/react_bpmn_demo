@@ -40,12 +40,12 @@ PaletteProvider.prototype.getPaletteEntries = function () {
     const create = this._create;
     const elementFactory = this._elementFactory;
     const translate = this._translate;
-    const handTool = this._handTool
-    const spaceTool = this._spaceTool;
-    const lassoTool = this._lassoTool;
-    const globalConnect = this._globalConnect;
+    // const handTool = this._handTool
+    // const spaceTool = this._spaceTool;
+    // const lassoTool = this._lassoTool;
+    // const globalConnect = this._globalConnect;
 
-    function createAction(type, group, className, title, options) {
+    function createAction(type: string, group: string, className: string, title: string, options?: unknown) {
         function createListener(event) {
             const shape = elementFactory.createShape(assign({ type }), options);
             if (options) {
@@ -66,46 +66,46 @@ PaletteProvider.prototype.getPaletteEntries = function () {
     }
 
     assign(actions, {
-        'lasso-tool': {
-            group: 'tools',
-            className: 'bpmn-icon-lasso-tool',
-            title: translate('Activate the lasso tool'),
-            action: {
-                click(event) {
-                    lassoTool.activateSelection(event);
-                },
-            },
-        },
-        'space-tool': {
-            group: 'tools',
-            className: 'bpmn-icon-space-tool',
-            title: translate('Activate the create/remove space tool'),
-            action: {
-                click(event) {
-                    spaceTool.activateSelection(event);
-                },
-            },
-        },
-        'hand-tool': {
-            group: 'tools',
-            className: 'bpmn-icon-hand-tool',
-            title: translate('Activate the hand tool'),
-            action: {
-                click: event => {
-                    handTool.activateHand(event)
-                },
-            },
-        },
-        'global-connect-tool': {
-            group: 'tools',
-            className: 'bpmn-icon-connection-multi',
-            title: translate('Activate the global connect tool'),
-            action: {
-                click: event => {
-                    globalConnect.toggle(event)
-                },
-            },
-        },
+        // 'lasso-tool': {
+        //     group: 'tools',
+        //     className: 'bpmn-icon-lasso-tool',
+        //     title: translate('Activate the lasso tool'),
+        //     action: {
+        //         click(event) {
+        //             lassoTool.activateSelection(event);
+        //         },
+        //     },
+        // },
+        // 'space-tool': {
+        //     group: 'tools',
+        //     className: 'bpmn-icon-space-tool',
+        //     title: translate('Activate the create/remove space tool'),
+        //     action: {
+        //         click(event) {
+        //             spaceTool.activateSelection(event);
+        //         },
+        //     },
+        // },
+        // 'hand-tool': {
+        //     group: 'tools',
+        //     className: 'bpmn-icon-hand-tool',
+        //     title: translate('Activate the hand tool'),
+        //     action: {
+        //         click: event => {
+        //             handTool.activateHand(event)
+        //         },
+        //     },
+        // },
+        // 'global-connect-tool': {
+        //     group: 'tools',
+        //     className: 'bpmn-icon-connection-multi',
+        //     title: translate('Activate the global connect tool'),
+        //     action: {
+        //         click: event => {
+        //             globalConnect.toggle(event)
+        //         },
+        //     },
+        // },
         'create.start-event': createAction(
             'bpmn:StartEvent',
             'event',

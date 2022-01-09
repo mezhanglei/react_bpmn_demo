@@ -551,6 +551,7 @@ Minimap.prototype._addElement = function (element) {
     let newElementGfx = this._createElement(element);
     let newElementParentGfx = query(`#${cssEscape(element.parent.id)}`, this._elementsGroup);
     if (newElementGfx) {
+        // 返回对应的SVGElement
         let elementGfx = this._elementRegistry.getGraphics(element);
         let parentGfx = this._elementRegistry.getGraphics(element.parent);
 
@@ -618,6 +619,7 @@ Minimap.prototype._removeElement = function (element) {
 };
 
 Minimap.prototype._createElement = function (element) {
+    // 返回对应的SVGElement
     let gfx = this._elementRegistry.getGraphics(element),
         visual;
     if (gfx) {

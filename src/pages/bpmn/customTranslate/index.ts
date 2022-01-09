@@ -1,4 +1,4 @@
-import CustomTranslate from './CustomTranslate';
+import CustomTranslate from './customTranslate';
 
 export default {
     __init__: ['translate'],

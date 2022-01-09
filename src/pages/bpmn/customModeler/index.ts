@@ -10,6 +10,7 @@ import 'bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css';
 import CustomPalette from '../customPalette';
 import CustomTranslate from '../customTranslate';
 import CustomContextPad from '../customContextPad';
+import customRendererModule from '../customRender';
 
 export interface PropertiesPanel {
 
@@ -52,6 +53,7 @@ CustomModeler.prototype._modules = [].concat(CustomModeler.prototype._modules, [
     CustomPalette,
     CustomTranslate,
     CustomContextPad,
+    customRendererModule
 ]);
 
 CustomModeler.prototype.getCustomElements = function () {

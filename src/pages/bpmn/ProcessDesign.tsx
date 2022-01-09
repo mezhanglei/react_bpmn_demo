@@ -4,8 +4,8 @@ import { Modal } from 'antd';
 import lintModule from 'bpmn-js-bpmnlint';
 import CustomModeler from './customModeler';
 import CustomProperties from './customProperties';
-import flowableModdle from './js/flowable.json';
-import minimapModule from './js/minimap';
+import flowableModdle from './resource/flowable.json';
+import minimapModule from './minimap';
 import EditingTools from './editTool';
 import styles from './index.module.less';
 import bpmnlintConfig from '../../../.bpmnlintrc';
@@ -52,10 +52,10 @@ export default class ProcessDesign extends React.Component<ProcessDesignProps, {
 
   // 监听节点属性变化
   addModelerListener = () => {
-    const bpmnjs = this.modeler;
+    const bpmnModeler = this.modeler;
     const events = ['element.click', 'element.changed'];
     events.forEach((eventType) => {
-      bpmnjs.on(eventType, (e) => {
+      bpmnModeler.on(eventType, (e) => {
         const { element } = e;
         const { type } = element;
         if (type !== 'label') {
@@ -120,8 +120,37 @@ export default class ProcessDesign extends React.Component<ProcessDesignProps, {
     console.log(xml, '保存xml');
   };
 
+  // 创建节点和连线
+  // createBranchByShape = (modeler, element) => {
+  //   const canvas = modeler.get("canvas")
+  //   const elementFactory = modeler.get("elementFactory")
+  //   const modeling = modeler.get("modeling")
+  //   const rootElement = canvas.getRootElement()
+  //   const createTaskShape = (x: number, y: number) => {
+  //     let branchShape = elementFactory.createShape({
+  //       type: "bpmn:Task"
+  //     });
+  //     branchShape.businessObject.name = "节点名称";
+  //     return modeling.createShape(
+  //       branchShape,
+  //       {
+  //         x: element.x + x,
+  //         y: element.y + y
+  //       },
+  //       rootElement
+  //     )
+  //   }
+  //   let shape = modeler.get('elementRegistry').get(element.id)
+  //   let taskShape1 = createTaskShape(150, 160)
+  //   let taskShape2 = createTaskShape(150, -70)
+  //   modeling.connect(shape, taskShape1)
+  //   modeling.connect(shape, taskShape2)
+  // }
+
   render() {
     const { activeNodeEle } = this.state;
+
+    // console.log(this.modeler?.get("translate"))
     return (
       <>
         <div className={styles.editToolContainer}>
