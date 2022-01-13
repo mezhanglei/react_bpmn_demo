@@ -22,8 +22,8 @@ const Tasks = (props: CustomPropertiesProps) => {
     const [userType, setUserType] = useState('');
     const userOptions = [];
     const roleOptions = [];
-    const { activeNodeEle, updateProperties, modeler } = props;
-    const nodeValues = getBusinessObject(activeNodeEle);
+    const { activeElement, updateProperties, modeler } = props;
+    const nodeValues = getBusinessObject(activeElement);
     const { extensionElements: extensionEle } = nodeValues;
 
     const getSelectType = (role, user) => {
@@ -74,7 +74,7 @@ const Tasks = (props: CustomPropertiesProps) => {
             extensionElements = elementHelper.createElement(
                 'bpmn:ExtensionElements',
                 null,
-                activeNodeEle,
+                activeElement,
                 bpmnFactory,
             );
         }
@@ -93,7 +93,7 @@ const Tasks = (props: CustomPropertiesProps) => {
             customProperties = elementHelper.createElement(
                 'flowable:CustomProperties',
                 null,
-                activeNodeEle,
+                activeElement,
                 bpmnFactory,
             );
         }

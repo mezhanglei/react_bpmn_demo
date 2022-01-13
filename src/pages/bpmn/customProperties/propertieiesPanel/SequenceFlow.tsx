@@ -12,8 +12,8 @@ const { TextArea } = Input;
 
 const SequenceFlow = (props: CustomPropertiesProps) => {
     const [form] = Form.useForm();
-    const { activeNodeEle, updateProperties, modeler } = props;
-    const nodeValues = getBusinessObject(activeNodeEle);
+    const { activeElement, updateProperties, modeler } = props;
+    const nodeValues = getBusinessObject(activeElement);
     const { conditionExpression } = nodeValues || {};
     useEffect(() => {
         form.setFieldsValue({

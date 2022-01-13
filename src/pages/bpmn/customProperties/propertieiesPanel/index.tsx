@@ -6,8 +6,8 @@ import SequenceFlow from './SequenceFlow';
 import Task from './Task';
 
 const RenderPanel = (props: CustomPropertiesProps) => {
-    const { activeNodeEle = {} } = props;
-    const { type } = activeNodeEle || {};
+    const { activeElement = {} } = props;
+    const { type } = activeElement || {};
     const panels = {
         'bpmn:Process': <Process {...props} />, // 流程根节点属性面板
         'bpmn:StartEvent': <Events {...props} />, // 开始事件属性面板

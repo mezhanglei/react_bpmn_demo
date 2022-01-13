@@ -11,8 +11,8 @@ const FormItem = Form.Item;
 
 const Events = (props: CustomPropertiesProps) => {
     const [form] = Form.useForm();
-    const { activeNodeEle, updateProperties } = props;
-    const nodeValues = getBusinessObject(activeNodeEle);
+    const { activeElement, updateProperties } = props;
+    const nodeValues = getBusinessObject(activeElement);
     useEffect(() => {
         form.setFieldsValue({
             id: nodeValues?.id,

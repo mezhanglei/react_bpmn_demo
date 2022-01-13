@@ -8,12 +8,12 @@ const { TabPane } = Tabs;
 
 export interface CustomPropertiesProps {
     modeler: unknown
-    activeNodeEle: unknown
+    activeElement: unknown
     updateProperties: (value: any) => void
 }
 const CustomProperties = (props: CustomPropertiesProps) => {
-    const { activeNodeEle = {} } = props;
-    const { type } = activeNodeEle || {};
+    const { activeElement = {} } = props;
+    const { type } = activeElement || {};
     return (
         <Tabs type="card">
             <TabPane

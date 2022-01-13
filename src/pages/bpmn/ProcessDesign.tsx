@@ -14,7 +14,7 @@ export interface ProcessDesignProps {
   XML: string
 }
 
-export default class ProcessDesign extends React.Component<ProcessDesignProps, { activeNodeEle?: unknown }> {
+export default class ProcessDesign extends React.Component<ProcessDesignProps, { activeElement?: unknown }> {
   modeler: any;
   constructor(props: ProcessDesignProps) {
     super(props);
@@ -60,7 +60,7 @@ export default class ProcessDesign extends React.Component<ProcessDesignProps, {
         const { type } = element;
         if (type !== 'label') {
           this.setState({
-            activeNodeEle: element
+            activeElement: element
           });
         }
       });
@@ -72,7 +72,7 @@ export default class ProcessDesign extends React.Component<ProcessDesignProps, {
     const canvas = this.modeler.get('canvas');
     const rootElement = canvas.getRootElement();
     this.setState({
-      activeNodeEle: rootElement
+      activeElement: rootElement
     });
   };
 
@@ -92,9 +92,9 @@ export default class ProcessDesign extends React.Component<ProcessDesignProps, {
   // 更新xml
   updateProperties = (value: any) => {
     const modeling = this.modeler.get('modeling');
-    const { activeNodeEle } = this.state;
-    if (activeNodeEle) {
-      modeling.updateProperties(activeNodeEle, value);
+    const { activeElement } = this.state;
+    if (activeElement) {
+      modeling.updateProperties(activeElement, value);
     }
   };
 
@@ -120,37 +120,9 @@ export default class ProcessDesign extends React.Component<ProcessDesignProps, {
     console.log(xml, '保存xml');
   };
 
-  // 创建节点和连线
-  // createBranchByShape = (modeler, element) => {
-  //   const canvas = modeler.get("canvas")
-  //   const elementFactory = modeler.get("elementFactory")
-  //   const modeling = modeler.get("modeling")
-  //   const rootElement = canvas.getRootElement()
-  //   const createTaskShape = (x: number, y: number) => {
-  //     let branchShape = elementFactory.createShape({
-  //       type: "bpmn:Task"
-  //     });
-  //     branchShape.businessObject.name = "节点名称";
-  //     return modeling.createShape(
-  //       branchShape,
-  //       {
-  //         x: element.x + x,
-  //         y: element.y + y
-  //       },
-  //       rootElement
-  //     )
-  //   }
-  //   let shape = modeler.get('elementRegistry').get(element.id)
-  //   let taskShape1 = createTaskShape(150, 160)
-  //   let taskShape2 = createTaskShape(150, -70)
-  //   modeling.connect(shape, taskShape1)
-  //   modeling.connect(shape, taskShape2)
-  // }
-
   render() {
-    const { activeNodeEle } = this.state;
-
-    // console.log(this.modeler?.get("translate"))
+    const { activeElement } = this.state;
+    
     return (
       <>
         <div className={styles.editToolContainer}>
@@ -160,7 +132,7 @@ export default class ProcessDesign extends React.Component<ProcessDesignProps, {
           <div className={styles.bpmnContainer} id="bpmnContainer" />
           <aside className={styles.aside}>
             <div className={styles.panelContainer} id="properties-panel">
-              <CustomProperties modeler={this.modeler} updateProperties={this.updateProperties} activeNodeEle={activeNodeEle} />
+              <CustomProperties modeler={this.modeler} updateProperties={this.updateProperties} activeElement={activeElement} />
             </div>
           </aside>
         </div>

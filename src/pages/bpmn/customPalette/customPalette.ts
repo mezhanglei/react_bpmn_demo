@@ -45,12 +45,18 @@ PaletteProvider.prototype.getPaletteEntries = function () {
     // const lassoTool = this._lassoTool;
     // const globalConnect = this._globalConnect;
 
-    function createAction(type: string, group: string, className: string, title: string, options?: unknown) {
+    // 创建一个节点
+    function createAction(type: string, group: string, className: string, title: string, name?: string, options?: unknown) {
         function createListener(event) {
+            // 创建节点
             const shape = elementFactory.createShape(assign({ type }), options);
             if (options) {
                 shape.businessObject.di.isExpanded = options.isExpanded;
             }
+            if (typeof name === 'string') {
+                shape.businessObject.name = name;
+            }
+            // 准备渲染到画布(此时还未渲染到画布)
             create.start(event, shape);
         }
         const shortType = type.replace(/^bpmn:/, '');
@@ -111,24 +117,27 @@ PaletteProvider.prototype.getPaletteEntries = function () {
             'event',
             'bpmn-icon-start-event-none',
             'Create StartEvent',
+            '开始节点'
         ),
         'create.end-event': createAction(
             'bpmn:EndEvent',
             'event',
             'bpmn-icon-end-event-none',
             'Create EndEvent',
+            '结束节点'
         ),
         'create.exclusive-gateway': createAction(
             'bpmn:ExclusiveGateway',
             'gateway',
             'bpmn-icon-gateway-xor',
-            'Exclusive Gateway',
+            'Exclusive Gateway'
         ),
         'create.user-task': createAction(
             'bpmn:UserTask',
             'activity',
             'bpmn-icon-user-task',
             'User Task',
+            '任务节点'
         ),
     });
 

@@ -15,19 +15,20 @@ import {
 } from 'tiny-svg';
 
 import { is } from 'bpmn-js/lib/util/ModelUtil';
+import { Label, Shape } from 'diagram-js/lib/model';
 
 
 // 优先级
 const HIGH_PRIORITY = 1500;
 
-// 自定义渲染画布
+// 自定义画布上的节点的渲染效果
 export default function CustomRenderer(eventBus, styles, bpmnRenderer, textRenderer, pathMap) {
 
   const computeStyle = styles.computeStyle;
   BaseRenderer.call(this, eventBus, HIGH_PRIORITY);
 
   // 添加label节点
-  function renderLabel(parentGfx: SVGAElement, label: string, options) {
+  function renderLabel(parentGfx: SVGAElement, label: string, options: unknown) {
 
     options = assign({
       size: {
@@ -45,7 +46,7 @@ export default function CustomRenderer(eventBus, styles, bpmnRenderer, textRende
   }
 
   // 自定义渲染器
-  this.drawCustomElements = function (parentNode, element) {
+  this.drawCustomElements = function (parentNode: SVGAElement, element: Shape | Label) {
 
     // 边框svg
     const shape = bpmnRenderer.drawShape(parentNode, element);
@@ -63,6 +64,20 @@ export default function CustomRenderer(eventBus, styles, bpmnRenderer, textRende
       svgAppend(parentNode, customIcon as SVGElement);
       svgRemove(shape);
     }
+
+    // 结束节点
+    // if (is(element, 'bpmn:EndEvent')) {
+    //   const customIcon = svgCreate('image', {
+    //     x: 0,
+    //     y: 0,
+    //     width: 40,
+    //     height: 40,
+    //     href: ''
+    //   });
+    //   // 添加渲染自定义图标
+    //   svgAppend(parentNode, customIcon as SVGElement);
+    //   svgRemove(shape);
+    // }
 
     // 任务节点
     if (is(element, 'bpmn:Task')) {
@@ -117,7 +132,7 @@ export default function CustomRenderer(eventBus, styles, bpmnRenderer, textRende
       });
       const visualPathSvg = svgSelect(parentNode, 'path');
       // 移除分支中间的符号
-      svgRemove(visualPathSvg)
+      visualPathSvg && svgRemove(visualPathSvg)
     }
 
     return shape;
@@ -130,12 +145,12 @@ inherits(CustomRenderer, BaseRenderer);
 CustomRenderer.$inject = ['eventBus', 'styles', 'bpmnRenderer', 'textRenderer', 'pathMap'];
 
 // 自定义渲染的目标范围
-CustomRenderer.prototype.canRender = function (element) {
+CustomRenderer.prototype.canRender = function (element: unknown) {
   // 忽略label
-  return !element.labelTarget;
+  return !(element as Label).labelTarget;
 }
 
 // 自定义渲染器
-CustomRenderer.prototype.drawShape = function (parentNode, element) {
+CustomRenderer.prototype.drawShape = function (parentNode: SVGAElement, element: Shape | Label) {
   return this.drawCustomElements(parentNode, element)
 };
