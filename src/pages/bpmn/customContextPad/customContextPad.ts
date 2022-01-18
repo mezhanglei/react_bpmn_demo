@@ -125,29 +125,10 @@ CustomContextPadProvider.prototype.getContextPadEntries = function (element) {
     return cache;
   };
 
-  // 当前节点后面的节点最近距离
+  // 上次创建的分支所连接的点
   const getRecent = (ele: any) => {
     const outgoings = ele?.outgoing;
-    let min;
-    let recent;
-    for (let i = 0; i < outgoings?.length; i++) {
-      const target = outgoings[i]?.target;
-      const targetX = target?.x;
-      const sourceX = ele?.x;
-      // 排除后面节点在前面位置的情况
-      if (targetX > sourceX) {
-        if (min === undefined) {
-          min = targetX - sourceX;
-          recent = target;
-        } else {
-          if (targetX - sourceX < min) {
-            min = targetX - sourceX;
-            recent = target;
-          }
-        }
-      }
-    }
-    return recent;
+    return outgoings?.[outgoings?.length - 1]?.target;
   }
 
   // 获取除了根节点和起始点以外的所有节点
@@ -164,50 +145,93 @@ CustomContextPadProvider.prototype.getContextPadEntries = function (element) {
   // 创建节点
   const createAction = (source: string, target: string, options?: Attributes) => {
     return function (event, ele) {
-      // 所有节点
-      const elements = getElements();
-      // 当前元素后面的所有节点
       const nextElements = getNextElements(element);
-      // 当前元素后面最近的节点
       const recent = getRecent(element);
-      // 创建一个节点
-      const shape = elementFactory.createShape(assign({ type: target }, options));
-      const rootElement = canvas.getRootElement();
 
       // 创建分支
       if (target === 'bpmn:ExclusiveGateway') {
+        const taskType = 'bpmn:UserTask';
+        const task1ShapeNode = elementFactory.createShape(assign({ type: taskType }, options));
+        const task2ShapeNode = elementFactory.createShape(assign({ type: taskType }, options));
+        const gatewayNode = elementFactory.createShape(assign({ type: target }, options));
+        const deltaX = 200;
+        // 渲染分支
+        const gatewayShape = modeling.appendShape(element, gatewayNode, {
+          x: element.x + element?.width / 2 + deltaX,
+          y: element?.y + element?.height / 2
+        });
 
-      } else {
-        
-        // 插入元素操作
-        if (nextElements?.length) {
-          // 新元素设置距离
+        // 渲染两个节点
+        const task1Shape = modeling.appendShape(gatewayNode, task1ShapeNode, {
+          x: element.x + element?.width / 2 + deltaX * 2,
+          y: element?.y + element?.height / 2
+        });
+        const task2Shape = autoPlace.append(gatewayNode, task2ShapeNode);
+        modeling.moveElements(nextElements, { x: 450, y: 0 });
+        modeling.connect(task1Shape, recent);
+        modeling.connect(task2Shape, recent, {
+          type: 'bpmn:SequenceFlow',
+          // 前面表示起始点，后面表示指向结束点
+          waypoints: [
+            {
+              original: {
+                x: task2Shape.x + task2Shape.width / 2,
+                y: task2Shape.y + task2Shape.height / 2
+              },
+              x: task2Shape.x,
+              y: task2Shape.y
+            },
+            {
+              x: 790,
+              y: 310
+            },
+            {
+              x: 790,
+              y: 200
+            },
+            // { x: target.x - 50, y: source.y + source.height / 2 },
+            // { x: target.x - 50, y: target.y + target.height / 2 },
+            {
+              original: {
+                x: recent.x + recent.width / 2,
+                y: recent.y + recent.height / 2
+              },
+              x: recent.x,
+              y: recent.y
+            }
+          ]
+        });
+        console.log(task2Shape, task1Shape)
+        modeling.removeElements(element.outgoing);
+
+      } else { // 创建一个节点
+        const taskShapeNode = elementFactory.createShape(assign({ type: target }, options));
+        // 非插入元素或者给分支节点插入元素
+        if (source === 'bpmn:ExclusiveGateway' || !nextElements?.length) {
+          autoPlace.append(element, taskShapeNode);
+        } else {
+          // 插入元素设置距离
           const deltaX = 200;
-          const taskShape = modeling.createShape(
-            shape,
+          const taskShape = modeling.appendShape(
+            element,
+            taskShapeNode,
             {
               x: element.x + element?.width / 2 + deltaX,
               y: element?.y + element?.height / 2
-            },
-            rootElement
+            }
           );
-          // 创建的最小间隔
+          // 插入元素的最小间隔
           const minDistance = 150;
-          // 新元素最小设置距离
-          const minDeltaX = shape?.width / 2 + minDistance;
-          // 新元素均分轴线的距离
+          // 轴心到元素的最小距离
+          const minDeltaX = taskShape?.width / 2 + minDistance;
+          // 轴心到元素的实际距离
           const halfDeltaX = (recent?.x - element?.x) / 2;
           // 需要移动距离
           const moveX = halfDeltaX > minDeltaX ? 0 : (minDeltaX - halfDeltaX) * 2;
           modeling.moveElements(nextElements, { x: moveX, y: 0 })
           // 重新连接
-          modeling.connect(element, taskShape);
           modeling.connect(taskShape, recent);
-          // 移除原链接
-          modeling.removeElements(element?.outgoing);
-        } else {
-          // 新增元素操作
-          autoPlace.append(element, shape);
+          modeling.removeElements(element.outgoing);
         }
       }
     }
@@ -225,7 +249,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function (element) {
           className: 'bpmn-icon-gateway-xor',
           title: translate('Append ExclusiveGateway'),
           action: {
-            click: createBranchByShape
+            click: createAction('bpmn:StartEvent', 'bpmn:ExclusiveGateway')
           }
         },
         'append.user-task': {
