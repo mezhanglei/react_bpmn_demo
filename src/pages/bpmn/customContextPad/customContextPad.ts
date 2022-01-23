@@ -69,32 +69,6 @@ CustomContextPadProvider.prototype.getContextPadEntries = function (element) {
     modeling.removeElements([element]);
   }
 
-  // 创建节点和连线
-  const createBranchByShape = () => {
-    const rootElement = canvas.getRootElement()
-    const createTaskShape = (x: number, y: number) => {
-      // 创建节点
-      let branchShape = elementFactory.createShape({
-        type: "bpmn:UserTask"
-      });
-      branchShape.businessObject.name = "节点名称";
-      // 节点渲染到画布
-      return modeling.createShape(
-        branchShape,
-        {
-          x: element.x + x,
-          y: element.y + y
-        },
-        rootElement
-      )
-    }
-    // let shape = elementRegistry.get(element.id)
-    let taskShape1 = createTaskShape(150, 160)
-    let taskShape2 = createTaskShape(150, -70)
-    modeling.connect(element, taskShape1)
-    modeling.connect(element, taskShape2)
-  }
-
   // 获取当前节点所在线路后面的所有指向节点
   const getNextElements = (ele: Shape) => {
     // 存储节点
@@ -131,16 +105,16 @@ CustomContextPadProvider.prototype.getContextPadEntries = function (element) {
     return outgoings?.[outgoings?.length - 1]?.target;
   }
 
-  // 获取除了根节点和起始点以外的所有节点
-  const getElements = () => {
-    const elements = elementRegistry.filter(
-      (item: any) => {
-        const excludes = ["bpmn:Process", 'bpmn:SequenceFlow', 'bpmn:StartEvent'];
-        return !excludes?.includes(item.type) && !excludes?.includes(item.labelTarget?.type);
-      }
-    );
-    return elements;
-  };
+  // // 获取除了根节点和起始点以外的所有节点
+  // const getElements = () => {
+  //   const elements = elementRegistry.filter(
+  //     (item: any) => {
+  //       const excludes = ["bpmn:Process", 'bpmn:SequenceFlow', 'bpmn:StartEvent'];
+  //       return !excludes?.includes(item.type) && !excludes?.includes(item.labelTarget?.type);
+  //     }
+  //   );
+  //   return elements;
+  // };
 
   // 创建节点
   const createAction = (source: string, target: string, options?: Attributes) => {
@@ -156,7 +130,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function (element) {
         const gatewayNode = elementFactory.createShape(assign({ type: target }, options));
         const deltaX = 200;
         // 渲染分支
-        const gatewayShape = modeling.appendShape(element, gatewayNode, {
+        modeling.appendShape(element, gatewayNode, {
           x: element.x + element?.width / 2 + deltaX,
           y: element?.y + element?.height / 2
         });
@@ -181,16 +155,8 @@ CustomContextPadProvider.prototype.getContextPadEntries = function (element) {
               x: task2Shape.x,
               y: task2Shape.y
             },
-            {
-              x: 790,
-              y: 310
-            },
-            {
-              x: 790,
-              y: 200
-            },
-            // { x: target.x - 50, y: source.y + source.height / 2 },
-            // { x: target.x - 50, y: target.y + target.height / 2 },
+            { x: recent.x - 50, y: task2Shape.y + task2Shape.height / 2 },
+            { x: recent.x - 50, y: recent.y + recent.height / 2 },
             {
               original: {
                 x: recent.x + recent.width / 2,
@@ -201,7 +167,6 @@ CustomContextPadProvider.prototype.getContextPadEntries = function (element) {
             }
           ]
         });
-        console.log(task2Shape, task1Shape)
         modeling.removeElements(element.outgoing);
 
       } else { // 创建一个节点
